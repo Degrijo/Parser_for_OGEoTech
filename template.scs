@@ -1,0 +1,8 @@
+~1 <- concept_~2;;
+~1 <- sc_node_not_relation;;
+~1 => nrel_main_idtf: [~2](* <- lang_ru;; *);;
+~1 => nrel_main_idtf: [~2](* <- lang_en;; *);;
+~1 <- ~2;;
+~1 => nrel_population: ~2(*<-number;;*);;
+~1 => nrel_wiki_data: [~2](* <- lang_en;; *);;
+~1 => nrel_overpass_turbo: [[out:json][timeout:25];(relation["place"="city"]["name"="~2"]({{bbox}}););out body;>;out skel qt;];;
