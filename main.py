@@ -43,11 +43,11 @@ def get_inf(row, i):  # ['1204755001', 'Арабовщина', 'БРЕСТСКА
     if row[4]:
         if 'Совет' in row[4]:
             inf['parent_idtf'] = convert_to_translit(row[4].rsplit(' ', maxsplit=1)[0]) + '_soviet'
-            parent_name_eng = convert_to_translit(row[4].rsplit(' ', maxsplit=1)[0], False) + ' soviet'
-            parent_name_ru = row[4].capitalize()
+            #parent_name_eng = convert_to_translit(row[4].rsplit(' ', maxsplit=1)[0], False) + ' soviet'
+            #parent_name_ru = row[4].capitalize()
         else:
             inf['parent_idtf'] = convert_to_translit(row[4]) + '_soviet'
-            parent_name_eng = convert_to_translit(row[4], False) + ' soviet'
+            '''parent_name_eng = convert_to_translit(row[4], False) + ' soviet'
             parent_name_ru = row[4] + ' совет'
         with open('soviets.scs', 'r+', encoding='utf-8') as soviets:
             here = False
@@ -59,10 +59,10 @@ def get_inf(row, i):  # ['1204755001', 'Арабовщина', 'БРЕСТСКА
             if not here:
                 new = '{0} <- {1};;'.format(inf['parent_idtf'], convert_to_translit(row[3]) + '_district') + '\n{0} => nrel_main_idtf: [{1}](* <- lang_ru;; *);;{0} => nrel_main_idtf: [{2}](* <- lang_en;; *);;'.format(inf['parent_idtf'], parent_name_ru, parent_name_eng) + '\n'
                 new += '{} <- sc_node_not_relation;;'.format(inf['parent_idtf']) + '\n'
-                soviets.write(new)
+                soviets.write(new)'''
     elif row[3]:
         inf['parent_idtf'] = convert_to_translit(row[3]) + '_district'
-        parent_name_eng = convert_to_translit(row[3], False) + ' district'
+        '''parent_name_eng = convert_to_translit(row[3], False) + ' district'
         with open('districts.scs', 'r+', encoding='utf-8') as districts:
             here = False
             strings = districts.readlines()
@@ -82,10 +82,10 @@ def get_inf(row, i):  # ['1204755001', 'Арабовщина', 'БРЕСТСКА
                     prev = sheet.row_values(i - 1, 0)
                     new += convert_to_translit(prev[1]) + '_' + prev[0] + '\n'
                 new += '{} <- sc_node_not_relation;;'.format(inf['parent_idtf']) + '\n'
-                districts.write(new)
+                districts.write(new)'''
     elif row[2]:
         inf['parent_idtf'] = convert_to_translit(row[2].rsplit(' ', maxsplit=1)[0]) + '_region'
-        parent_name_eng = convert_to_translit(row[2].rsplit(' ', maxsplit=1)[0], False) + ' region'
+        '''parent_name_eng = convert_to_translit(row[2].rsplit(' ', maxsplit=1)[0], False) + ' region'
         with open('regions.scs', 'r+', encoding='utf-8') as regions:
             here = False
             strings = regions.readlines()
@@ -97,7 +97,7 @@ def get_inf(row, i):  # ['1204755001', 'Арабовщина', 'БРЕСТСКА
                 new = '{0} <- {1};;'.format(inf['parent_idtf'], 'republic_of_belarus') + '\n' + '{0} => nrel_main_idtf: [{1}](* <- lang_ru;; *);;{0} => nrel_main_idtf: [{2}](* <- lang_en;; *);;'.format(inf['parent_idtf'], row[2].capitalize(), parent_name_eng) + '\n'
                 prev = sheet.row_values(i - 1, 0)
                 new += '{0} => nrel_admin_center: {1};;'.format(inf['parent_idtf'], convert_to_translit(prev[1]) + '_' + prev[0]) + '\n' + '{} <- sc_node_not_relation;;'.format(inf['parent_idtf']) + '\n'
-                regions.write(new)
+                regions.write(new)'''
     else:
         inf['parent_idtf'] = 'republic_of_belarus'
     if row[5] == 'аг.' or row[5] == 'с.':
@@ -162,8 +162,8 @@ def create_scs(inf, template):
 api = overpy.Overpass()
 wb = xlrd.open_workbook('CITY.xls')
 sheet = wb.sheet_by_index(0)
-for i in range(27231, sheet.nrows):
-    inf = get_inf(sheet.row_values(i, 0, 6), i)
-    with open('output/' + inf['idtf']+'.scs', 'w', encoding='utf-8') as defenition:
-        template = open('template.scs', 'r', encoding='utf-8')
-        defenition.write('\n'.join(create_scs(inf, template.readlines())))
+#for i in range(27231, sheet.nrows):
+inf = get_inf(sheet.row_values(23674, 0, 6), 23674)
+with open('output/' + inf['idtf']+'.scs', 'w', encoding='utf-8') as defenition:
+    template = open('template.scs', 'r', encoding='utf-8')
+    defenition.write('\n'.join(create_scs(inf, template.readlines())))
