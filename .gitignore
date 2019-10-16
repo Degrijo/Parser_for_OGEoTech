@@ -1,5 +1,6 @@
-output
+output/
 classes.scs
-regions.scs
-districts.scs
-soviets.scs
+structure.scs
+template.scs
+.idea/
+venv/
